@@ -62,4 +62,4 @@ Ganti dengan nomor kamu (format internasional tanpa `+`).
 ---
 
 ## 🖼️ Preview
-![Preview Website](https://shop.xentra.biz.id)
+![Preview Website](https://placehold.co/400x300/2563EB/ffffff?text=apa+lu?)
