@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Olshop - Keranjang & WhatsApp</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+    body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+</style>
+</head>
+<body class="antialiased">
+
+<!-- Header -->
+<header class="bg-white shadow-md">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+        <div class="text-2xl font-bold text-blue-600">Olshop</div>
+        <div class="text-gray-600 font-semibold">Keranjang: <span id="cart-count">0</span> item</div>
+    </div>
+</header>
+
+<!-- Produk -->
+<section class="py-12">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-10">Produk</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            <!-- Produk 1 -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden p-4 text-center">
+                <img src="https://placehold.co/400x300/2563EB/ffffff?text=Produk+1" class="w-full h-48 object-cover mb-4" alt="Produk 1">
+                <h3 class="text-xl font-semibold mb-2">T-Shirt</h3>
+                <p class="text-gray-600 mb-4">Rp 50.000</p>
+                <button class="add-to-cart w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                        data-product="T-Shirt" data-price="50000">
+                    Tambah ke Keranjang
+                </button>
+            </div>
+
+            <!-- Produk 2 -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden p-4 text-center">
+                <img src="https://placehold.co/400x300/2563EB/ffffff?text=Produk+2" class="w-full h-48 object-cover mb-4" alt="Produk 2">
+                <h3 class="text-xl font-semibold mb-2">Backpack</h3>
+                <p class="text-gray-600 mb-4">Rp 150.000</p>
+                <button class="add-to-cart w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                        data-product="Backpack" data-price="150000">
+                    Tambah ke Keranjang
+                </button>
+            </div>
+
+            <!-- Produk 3 -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden p-4 text-center">
+                <img src="https://placehold.co/400x300/2563EB/ffffff?text=Produk+3" class="w-full h-48 object-cover mb-4" alt="Produk 3">
+                <h3 class="text-xl font-semibold mb-2">Jam Tangan</h3>
+                <p class="text-gray-600 mb-4">Rp 300.000</p>
+                <button class="add-to-cart w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                        data-product="Jam Tangan" data-price="300000">
+                    Tambah ke Keranjang
+                </button>
+            </div>
+
+            <!-- Produk 4 -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden p-4 text-center">
+                <img src="https://placehold.co/400x300/2563EB/ffffff?text=Produk+4" class="w-full h-48 object-cover mb-4" alt="Produk 4">
+                <h3 class="text-xl font-semibold mb-2">Sneakers</h3>
+                <p class="text-gray-600 mb-4">Rp 250.000</p>
+                <button class="add-to-cart w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                        data-product="Sneakers" data-price="250000">
+                    Tambah ke Keranjang
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Ringkasan Keranjang -->
+        <div class="mt-8 bg-white p-6 rounded-xl shadow-md max-w-md mx-auto">
+            <h3 class="text-xl font-bold mb-4">Ringkasan Keranjang</h3>
+            <ul id="cart-items" class="mb-4 list-disc list-inside text-gray-700"></ul>
+            <p class="text-lg font-semibold mb-4">Total: Rp <span id="cart-total">0</span></p>
+            <button id="checkout" class="w-full py-3 bg-green-600 text-white rounded-lg font-bold hover:bg-green-700 transition-colors">
+                Checkout via WhatsApp
+            </button>
+        </div>
+
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-gray-800 text-gray-300 py-8 text-center">
+    &copy; 2025 Olshop. All rights reserved.
+</footer>
+
+<!-- Script -->
+<script>
+    const whatsappNumber = "6281234567890"; // Ganti nomor WhatsApp kamu
+    let cart = [];
+
+    const cartCountEl = document.getElementById('cart-count');
+    const cartItemsEl = document.getElementById('cart-items');
+    const cartTotalEl = document.getElementById('cart-total');
+    const addButtons = document.querySelectorAll('.add-to-cart');
+    const checkoutBtn = document.getElementById('checkout');
+
+    function formatRupiah(angka) {
+        return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    function updateCartDisplay() {
+        cartItemsEl.innerHTML = '';
+        let total = 0;
+        cart.forEach((item, idx) => {
+            const li = document.createElement('li');
+            li.textContent = `${item.name} - Rp ${formatRupiah(item.price)}`;
+            cartItemsEl.appendChild(li);
+            total += item.price;
+        });
+        cartTotalEl.textContent = formatRupiah(total);
+        cartCountEl.textContent = cart.length;
+    }
+
+    addButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const name = btn.dataset.product;
+            const price = parseInt(btn.dataset.price);
+            cart.push({ name, price });
+            updateCartDisplay();
+        });
+    });
+
+    checkoutBtn.addEventListener('click', () => {
+        if (cart.length === 0) {
+            alert("Keranjang kosong! Silakan tambah produk terlebih dahulu.");
+            return;
+        }
+
+        let message = "Halo, saya ingin memesan:%0A";
+        cart.forEach((item, idx) => {
+            message += `${idx + 1}. ${item.name} - Rp ${formatRupiah(item.price)}%0A`;
+        });
+        const total = cart.reduce((sum, item) => sum + item.price, 0);
+        message += `Total: Rp ${formatRupiah(total)}`;
+
+        const whatsappURL = `https://wa.me/${whatsappNumber}?text=${message}`;
+        window.open(whatsappURL, "_blank");
+    });
+</script>
+
+</body>
+</html>
